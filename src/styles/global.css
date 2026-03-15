@@ -28,16 +28,3 @@ body {
 	font-family: "Manrope", "Segoe UI", sans-serif;
 }
 
-.pop-in-card {
-	opacity: 1;
-	transform: scale(1);
-	visibility: hidden;
-	transform-origin: center;
-	will-change: transform;
-}
-
-.pop-in-card.is-visible {
-	opacity: 1;
-	transform: scale(1);
-	visibility: visible;
-}
