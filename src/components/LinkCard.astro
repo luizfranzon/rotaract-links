@@ -1,0 +1,37 @@
+---
+const { title, description, url, cover } = Astro.props;
+
+const optimizedCover = cover
+  ? `${cover}${cover.includes("?") ? "&" : "?"}width=288&height=230&fit=crop&auto=format,compress`
+  : null;
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="pop-in-card group block overflow-hidden rounded-(--radius-card) border border-(--border) bg-(--surface) shadow-(--shadow-soft) transition duration-200 hover:bg-(--surface-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand)"
+>
+  <div class="flex h-28.75 items-stretch">
+    <div class="min-w-0 grow p-4">
+      <h3 class="truncate text-sm font-bold leading-5 text-(--text-primary)">
+        {title}
+      </h3>
+      <p class="mt-1 line-clamp-2 text-xs leading-5 text-(--text-secondary)">
+        {description ?? "Acesse este link"}
+      </p>
+    </div>
+    {
+      cover && (
+        <div class="w-36 shrink-0 overflow-hidden border-l border-(--border) bg-transparent">
+          <img
+            src={optimizedCover}
+            alt={`Capa de ${title}`}
+            loading="lazy"
+            class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+        </div>
+      )
+    }
+  </div>
+</a>

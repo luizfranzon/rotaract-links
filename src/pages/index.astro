@@ -1,17 +1,110 @@
 ---
+import LinkCard from "../components/LinkCard.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getLinks } from "../lib/hygraph";
+import { Image } from "astro:assets";
+import logo from "../assets/logo.jpg";
 
+const pageTitle = "Links";
+
+const links = await getLinks();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={pageTitle}>
+  <section class="mb-7 text-center">
+    <div class="mx-auto mb-4 grid h-24 w-24 place-content-center overflow-hidden rounded-full border border-(--border) bg-transparent">
+      <Image
+        src={logo}
+        alt="Logo Rotaract"
+        width={96}
+        height={96}
+        format="webp"
+        loading="eager"
+        class="h-full w-full object-cover"
+      />
+    </div>
+    <h1 class="text-3xl font-extrabold tracking-tight text-(--text-primary)">
+      Rotaract Indaiatuba
+    </h1>
+  </section>
+
+  <section class="space-y-3">
+    {
+      links.map((link) => (
+        <LinkCard
+          title={link.title}
+          description={link.description}
+          url={link.url}
+          cover={link.cover?.url}
+        />
+      ))
+    }
+  </section>
+
+  <script>
+    const popOut = (t: number) => {
+      const c1 = 1.70158;
+      const c3 = c1 + 1;
+      return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+    };
+
+    const animatePopIn = (
+      el: HTMLElement,
+      { duration = 800, delay = 0, start = 0.75 }: { duration?: number; delay?: number; start?: number } = {},
+    ) => {
+      const run = () => {
+        const startAt = performance.now();
+        el.style.visibility = "visible";
+        el.style.transform = `scale(${start})`;
+
+        const tick = (now: number) => {
+          const t = Math.min(1, (now - startAt) / duration);
+          const scale = start + (1 - start) * popOut(t);
+
+          el.style.transform = `scale(${scale})`;
+
+          if (t < 1) {
+            requestAnimationFrame(tick);
+            return;
+          }
+
+          el.classList.add("is-visible");
+          el.style.transform = "";
+        };
+
+        requestAnimationFrame(tick);
+      };
+
+      window.setTimeout(run, delay);
+    };
+
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".pop-in-card"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      cards.forEach((card) => card.classList.add("is-visible"));
+    } else if (cards.length > 0) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            const card = entry.target as HTMLElement;
+            animatePopIn(card, {
+              duration: 260,
+              delay: 0,
+              start: 0.9,
+            });
+
+            obs.unobserve(card);
+          });
+        },
+        { threshold: 0.2 },
+      );
+
+      cards.forEach((card) => observer.observe(card));
+    }
+  </script>
+</BaseLayout>
