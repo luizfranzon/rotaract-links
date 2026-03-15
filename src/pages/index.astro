@@ -2,8 +2,6 @@
 import LinkCard from "../components/LinkCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getLinks } from "../lib/hygraph";
-import { Image } from "astro:assets";
-import logo from "../assets/logo.jpg";
 
 const pageTitle = "Links";
 const pageDescription =
@@ -79,15 +77,12 @@ const structuredData = {
 
 <BaseLayout title={pageTitle} description={pageDescription} ogImage="/logo.jpg">
   <section class="mb-7 text-center">
-    <div class="mx-auto mb-4 grid h-24 w-24 place-content-center overflow-hidden rounded-full border border-(--border) bg-transparent">
-      <Image
-        src={logo}
+    <div class="mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full border border-(--border) bg-transparent">
+      <img
+        src="/logo.jpg"
         alt="Logo Rotaract"
-        width={96}
-        height={96}
-        format="webp"
         loading="eager"
-        class="h-full w-full object-cover"
+        class="block h-full w-full object-cover object-center"
       />
     </div>
     <h1 class="text-3xl font-extrabold tracking-tight text-(--text-primary)">
