@@ -1,7 +1,26 @@
 ---
 import "../styles/global.css";
 
-const { title } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = "Links oficiais do Rotaract Club de Indaiatuba.",
+  ogImage = "/logo.jpg",
+  canonicalUrl,
+  noindex = false,
+} = Astro.props as Props;
+
+const siteUrl = Astro.site ?? new URL(Astro.url.origin);
+const canonical = canonicalUrl ?? new URL(Astro.url.pathname, siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large";
 ---
 
 <html lang="pt-BR">
@@ -11,6 +30,23 @@ const { title } = Astro.props;
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rotaract Indaiatuba" />
+    <meta property="og:title" content={`${title} | Rotaract Indaiatuba`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | Rotaract Indaiatuba`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <title>{title} | Rotaract Indaiatuba</title>
   </head>
   <body>
