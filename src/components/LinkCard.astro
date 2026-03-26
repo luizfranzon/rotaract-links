@@ -11,8 +11,7 @@ const optimizedCover = cover
   target="_blank"
   rel="noopener noreferrer"
   aria-label={`Abrir ${title} em nova aba`}
-  class="pop-in-card group block overflow-hidden rounded-(--radius-card) border border-(--border) bg-(--surface) shadow-(--shadow-soft) transition duration-200 hover:bg-(--surface-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand)"
->
+  class="pop-in-card card-3d group block overflow-hidden rounded-(--radius-card) bg-(--surface) transition duration-200 hover:bg-(--surface-hover) focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--brand)">
   <div class="flex h-28.75 items-stretch">
     <div class="min-w-0 grow p-4">
       <h3 class="truncate text-sm font-bold leading-5 text-(--text-primary)">
@@ -36,3 +35,16 @@ const optimizedCover = cover
     }
   </div>
 </a>
+
+<style>
+  .card-3d {
+    position: relative;
+    isolation: isolate;
+    box-shadow: 3px 4px 0 #d304c7;
+    border: 2px solid var(--border);
+  }
+  .card-3d:active {
+    transform: translateY(2px);
+    box-shadow: 2px 2px 0 #d304c7;
+  }
+</style>
