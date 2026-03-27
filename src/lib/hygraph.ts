@@ -17,10 +17,10 @@ export async function getLinks(): Promise<Link[]> {
     body: JSON.stringify({
       query: `
       query {
-        links {
+        links(where: {isVisible: true}, orderBy: order_ASC) {
           id
+          order
           title
-          description
           url
           cover {
             url
