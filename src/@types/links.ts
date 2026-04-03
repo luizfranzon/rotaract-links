@@ -4,6 +4,7 @@ export interface Link {
   url: string;
   description: string;
   cover: Cover | null;
+  autoExpireAt: string | null; //yyyy-mm-dd
 }
 
 export interface Cover {
