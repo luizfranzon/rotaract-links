@@ -30,10 +30,9 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo.jpg" />
-    <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preload" href="/fonts/Manrope-Regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/Manrope-ExtraBold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/Manrope-Bold.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ececec" />
     <meta name="author" content="Rotaract Club de Indaiatuba" />
@@ -67,5 +66,20 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow, max-image-
     <main class="mx-auto w-full max-w-xl px-4 py-10 sm:py-14">
       <slot />
     </main>
+    <script is:inline>
+      const addManifestLink = () => {
+        if (document.querySelector('link[rel="manifest"]')) return;
+        const manifest = document.createElement("link");
+        manifest.rel = "manifest";
+        manifest.href = "/site.webmanifest";
+        document.head.appendChild(manifest);
+      };
+
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(addManifestLink, { timeout: 2000 });
+      } else {
+        window.addEventListener("load", addManifestLink, { once: true });
+      }
+    </script>
   </body>
 </html>
